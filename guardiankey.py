@@ -6,13 +6,14 @@ import requests
 from Crypto.Cipher import AES
 from _socket import timeout
 
-# Please run register.py for generate your configuration
+# Please run register.py for generate your configuration,
+#  or take this info at panel.guardiankey.io
 GKconfig = {}
 GKconfig['agentid'] = ''
-GKconfig['key'] = ''
-GKconfig['iv'] = ''
-GKconfig['service'] = 'TestService'
-GKconfig['orgid'] = ''
+GKconfig['key']     = ''
+GKconfig['iv']      = ''
+GKconfig['service'] = 'MySystem'
+GKconfig['orgid']   = ''
 GKconfig['authgroupid'] = ''
 GKconfig['reverse'] = True
 
@@ -30,7 +31,7 @@ def getUserAgent():
 def create_message(username,userEmail="",loginfailed=0,eventType='Authentication'):
     global GKconfig
     keyb64      = GKconfig['key']
-    ivb64         = GKconfig['iv']
+    ivb64       = GKconfig['iv']
     agentid     = GKconfig['agentid']
     orgid       = GKconfig['orgid']
     authgroupid = GKconfig['authgroupid']
@@ -63,7 +64,7 @@ def create_message(username,userEmail="",loginfailed=0,eventType='Authentication
         sjson['userEmail'] = userEmail
         message = json.dumps(sjson)
         obj = AES.new(key,AES.MODE_CFB, iv, segment_size=8)
-        cryptmessage = base64.b64encode(obj.encrypt(message))
+        cryptmessage = base64.b64encode(obj.encrypt(message)).decode('ascii')
         return cryptmessage
         
 def sendeventUDP(username,userEmail="",loginfailed=0,eventType='Authentication'):
